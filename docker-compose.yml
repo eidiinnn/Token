@@ -1,0 +1,22 @@
+services:
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME:
+      MONGO_INITDB_ROOT_PASSWORD:
+  node:
+    image: "node:16.13.0"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    ports:
+      - 8080:8080
+    volumes:
+      - ./:/home/node/app
+    links:
+      - mongo
+    command: "npm run dev"
