@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const tokens = require("./token/tokens.js");
+const CreateTokens = require("./token/CreateTokens.js");
 const mongoDB = require("./db/mongoDB");
 const verifyTokens = require("./token/verifyTokens");
 
@@ -9,8 +9,8 @@ app.use(express.json());
 
 app.get("/tokenGenerate", async (req, res) => {
   try {
-    const normalToken = tokens.createRefreshToken();
-    const refreshToken = tokens.createRefreshToken();
+    const normalToken = CreateTokens.createRefreshToken();
+    const refreshToken = CreateTokens.createRefreshToken();
     const ip = req.connection.remoteAddress;
     await mongoDB.registerNewToken(normalToken, refreshToken, ip);
     res.status(200).json({ normalToken, refreshToken });
