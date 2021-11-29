@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
+require('dotenv').config()
 
 const mongoDB = {
-  uri: "mongodb://172.17.0.1:27017/tokens",
+  uri: process.env.DB_URI,
   ModelToken: mongoose.model("token", {
     normalToken: Object,
     refreshToken: Object,
