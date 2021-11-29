@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-require('dotenv').config()
+require("dotenv").config();
 
 const mongoDB = {
   uri: process.env.DB_URI,
@@ -27,7 +27,7 @@ const mongoDB = {
     return new Promise((resolve, reject) => {
       toDB.save((err) => {
         if (!err) return resolve();
-        reject([500, {'error': "can't register a new token in the database"}]);
+        reject([500, { error: "can't register a new token in the database" }]);
       });
     });
   },
@@ -38,7 +38,7 @@ const mongoDB = {
         { normalOrRefresh: Object, token: token },
         (err, obj) => {
           if (!err) return resolve(obj);
-          reject([500, {'error': "can't get a token from the database"}]);
+          reject([500, { error: "can't get a token from the database" }]);
         }
       );
     });
