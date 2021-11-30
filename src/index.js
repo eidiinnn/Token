@@ -3,6 +3,7 @@ const app = express();
 const mongoDB = require("./db/mongoDB");
 const process = require("./token/process/process");
 const createTokens = require("./token/CreateTokens/createTokens");
+const error = require("./error/error");
 
 mongoDB.connect();
 app.use(express.json());
@@ -12,12 +13,7 @@ app.get("/tokenGenerate", async (req, res) => {
     const result = await createTokens.start(mongoDB);
     res.status(200).json(result);
   } catch (err) {
-    if (!Array.isArray(err)) {
-      res.status(500).json({ error: "can't generate the token" });
-      console.log(err);
-    } else {
-      res.status(err[0]).json(err[1]);
-    }
+    error.start(err, res, "can't generate the token");
   }
 });
 
@@ -27,12 +23,7 @@ app.get("/verify", async (req, res) => {
     const processResult = await process.start(normalToken, refreshToken, mongoDB);
     res.status(200).json({ processResult });
   } catch (err) {
-    if (!Array.isArray(err)) {
-      res.status(500).json({ error: "can't verify the token" });
-      console.log(err);
-    } else {
-      res.status(err[0]).json(err[1]);
-    }
+    error.start(err, res, "can't verify the token");
   }
 });
 
