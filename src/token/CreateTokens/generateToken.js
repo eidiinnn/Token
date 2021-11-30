@@ -1,6 +1,6 @@
 const { uuid } = require("uuidv4");
 
-const tokens = {
+const newTokens = {
   createNormalToken() {
     const expiration = new Date();
     expiration.setSeconds(expiration.getSeconds() + 60);
@@ -19,4 +19,4 @@ const tokens = {
   },
 };
 
-module.exports = tokens;
+module.exports = newTokens;

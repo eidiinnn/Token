@@ -1,20 +1,16 @@
 const express = require("express");
 const app = express();
-const CreateTokens = require("./token/CreateTokens.js");
 const mongoDB = require("./db/mongoDB");
 const process = require("./token/process/process");
+const createTokens = require("./token/CreateTokens/createTokens");
 
 mongoDB.connect();
 app.use(express.json());
 
 app.get("/tokenGenerate", async (req, res) => {
   try {
-    const normalToken = CreateTokens.createNormalToken();
-    const refreshToken = CreateTokens.createRefreshToken();
-    const ip = req.connection.remoteAddress;
-
-    await mongoDB.registerNewToken(normalToken, refreshToken, ip);
-    res.status(200).json({ normalToken, refreshToken });
+    const result = await createTokens.start(mongoDB);
+    res.status(200).json(result);
   } catch (err) {
     if (!Array.isArray(err)) {
       res.status(500).json({ error: "can't generate the token" });
