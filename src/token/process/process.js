@@ -4,24 +4,25 @@ const process = {
   async start(normalToken, refreshToken, mongoDB) {
     try {
       const dbContent = await mongoDB.getToken(normalToken.token);
+      this.firstVerify(normalToken, refreshToken, dbContent);
 
-      verifyTokens.verifyClientTokens(normalToken, refreshToken);
-      verifyTokens.compareTokens(normalToken, dbContent, "normalToken");
-
-      const resultNormal = verifyTokens.compareTokensDate(dbContent, "normalToken");
-
-      if (resultNormal === "ok") {
-        return "access granted";
-      } else {
-        verifyTokens.compareTokens(refreshToken, dbContent, "refreshToken");
-        const resultRefresh = verifyTokens.compareTokensDate(dbContent, "normalToken");
-
-        if (resultRefresh === "ok") return "make new token";
-        else return "make new refresh token";
-      }
+      const normalTokenDate = verifyTokens.compareTokensDate(dbContent, "normalToken");
+      if (normalTokenDate === "expires") return this.refreshTokenAction(dbContent);
+      else return { msg: "access granted" };
     } catch (err) {
       throw err;
     }
+  },
+
+  refreshTokenAction(dbContent) {
+    const result = verifyTokens.compareTokensDate(dbContent, "refreshToken");
+    if (result === "ok") return { msg: "make new normal token" };
+    else return { msg: "make new refresh token" };
+  },
+
+  firstVerify(normalToken, refreshToken, dbContent) {
+    verifyTokens.verifyClientTokens(normalToken, refreshToken);
+    verifyTokens.compareTokens(normalToken, dbContent, "normalToken");
   },
 };
 
