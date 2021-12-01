@@ -1,6 +1,6 @@
 const verifyTokens = {
-  verifyClientTokens(normalToken, refreshToken) {
-    if (!normalToken.token || !refreshToken.token) {
+  verifyClientTokens(normalToken, refreshToken, dbContent) {
+    if (!normalToken.token || !refreshToken.token || !dbContent) {
       throw [400, { error: "problem with tokens" }];
     } else {
       return;
@@ -20,9 +20,9 @@ const verifyTokens = {
     let dateDB = new Date(dbContent[normalOrRefresh]["expirationDate"]);
 
     if (nowDate.getTime() > dateDB.getTime()) {
-      return "expires";
+      return false;
     } else {
-      return "ok";
+      return true;
     }
   },
 };

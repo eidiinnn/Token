@@ -3,7 +3,7 @@ const { uuid } = require("uuidv4");
 const newTokens = {
   createNormalToken() {
     const expiration = new Date();
-    expiration.setSeconds(expiration.getSeconds() + 60);
+    expiration.setSeconds(expiration.getSeconds() + 10);
     return {
       token: uuid(),
       expirationDate: expiration,

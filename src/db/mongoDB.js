@@ -40,6 +40,19 @@ const mongoDB = {
       });
     });
   },
+
+  replaceToken(token, newToken) {
+    return new Promise((resolve, reject) => {
+      this.ModelToken.findOneAndUpdate(
+        { "normalToken.token": token },
+        newToken,
+        (err, obj) => {
+          if (!err) return resolve(obj);
+          else reject([500, { error: "can't replace the token" }]);
+        }
+      );
+    });
+  },
 };
 
 module.exports = mongoDB;
