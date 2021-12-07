@@ -23,6 +23,6 @@ npm start
 ## How to use the API
 I recommend Insomnia to use the API services. you can download it at this [link](https://insomnia.rest/).
 ### Generate a new token
-Using the `/tokenGenerate` .
+Using the `GET /tokenGenerate` .
 ### Verify the token
-Uses the `/verify` with a JSON generated from `/tokenGenerate` and if one of the tokens expires the API will return a new token else its be will return access granted message.
+Uses the `GET /verify` with a JSON generated from `GET /tokenGenerate` and if one of the tokens expires the API will return a new token else its be will return access granted message.
